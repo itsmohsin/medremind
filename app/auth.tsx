@@ -8,8 +8,6 @@ import { router } from "expo-router";
 
 const {width} = Dimensions.get('window');
 
-
-
 export default function AuthScreen(){
     const [hasBiometrics, setHasBiometrics] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -32,7 +30,7 @@ export default function AuthScreen(){
         setIsAuthenticating(true);
         const hasHardware = await LocalAuthentcation.hasHardwareAsync();
         const isEnrolled = await LocalAuthentcation.isEnrolledAsync();
-        const supportTypes = await LocalAuthentcation.supportedAuthenticationTypesAsync;
+        const supportedTypes = await LocalAuthentcation.supportedAuthenticationTypesAsync;
         // handle supported authentication types
         const  auth = await LocalAuthentcation.authenticateAsync({
             promptMessage: hasHardware && hasBiometrics ? 'Use face ID/Touch' : 'Enter your PIN to access medication',
@@ -41,9 +39,9 @@ export default function AuthScreen(){
             disableDeviceFallback: false,
         });
         if(auth.success) {
-            router.replace('/')
+            router.replace('/home')
         } else {
-            setError('Authentication failed: Please try again')
+            setError('Authentication failed: Please try again');
         }
     } catch (error) {}
     };
